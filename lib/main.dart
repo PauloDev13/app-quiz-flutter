@@ -5,6 +5,7 @@ void main() => runApp(QuizApp());
 class QuizApp extends StatelessWidget {
   const QuizApp({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,6 +29,15 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+
+  List <Widget> marcadorDePontos = [];
+
+  List <String> perguntas = [
+    'O metrô é um dos meios de transporte mais seguros do mundo',
+    'A culinária brasileira é uma das melhores do mundo.',
+    'Vacas podem voar, assim como peixes d\'água utilizam os pés para andar.',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -40,7 +50,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'As perguntas serão exibidas aqui.',
+                perguntas.first,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -92,17 +102,8 @@ class _QuizPageState extends State<QuizPage> {
           ),
         ),
         Row(
-          children: <Widget>[
-            Icon(
-              Icons.check,
-              color: Colors.green,
-            ),
-            Icon(
-              Icons.close,
-              color: Colors.red,
-            ),
-          ],
-        )
+          children: marcadorDePontos,
+        ),
       ],
     );
   }
