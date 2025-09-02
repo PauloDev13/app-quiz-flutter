@@ -38,6 +38,8 @@ class _QuizPageState extends State<QuizPage> {
     'Vacas podem voar, assim como peixes d\'água utilizam os pés para andar.',
   ];
 
+  int indiceQuestaoAtual = 0;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -50,7 +52,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                perguntas.first,
+                perguntas[indiceQuestaoAtual],
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -76,6 +78,9 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //O usuário clica no botão verdadeiro.
+                setState(() {
+                  indiceQuestaoAtual++;
+                });
               },
             ),
           ),
@@ -97,6 +102,9 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //O usuário clica no botão falso.
+                setState(() {
+                  indiceQuestaoAtual++;
+                });
               },
             ),
           ),
