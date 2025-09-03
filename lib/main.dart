@@ -5,7 +5,6 @@ void main() => runApp(QuizApp());
 class QuizApp extends StatelessWidget {
   const QuizApp({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,14 +28,15 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  List<Widget> marcadorDePontos = [];
 
-  List <Widget> marcadorDePontos = [];
-
-  List <String> perguntas = [
+  List<String> perguntas = [
     'O metrô é um dos meios de transporte mais seguros do mundo',
     'A culinária brasileira é uma das melhores do mundo.',
     'Vacas podem voar, assim como peixes d\'água utilizam os pés para andar.',
   ];
+
+  List<bool> respostas = [true, true, false];
 
   int indiceQuestaoAtual = 0;
 
@@ -54,9 +54,7 @@ class _QuizPageState extends State<QuizPage> {
               child: Text(
                 perguntas[indiceQuestaoAtual],
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 25.0,
-                ),
+                style: TextStyle(fontSize: 25.0),
               ),
             ),
           ),
@@ -67,19 +65,30 @@ class _QuizPageState extends State<QuizPage> {
             child: TextButton(
               style: TextButton.styleFrom(
                 backgroundColor: Colors.deepPurple,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.zero)
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadiusGeometry.zero,
+                ),
               ),
               child: Text(
                 'Verdadeiro',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0,
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 20.0),
               ),
               onPressed: () {
+                bool respostaCerta = respostas[indiceQuestaoAtual];
+
+                if (respostaCerta) {
+                  marcadorDePontos.add(Icon(Icons.check));
+                } else {
+                  marcadorDePontos.add(Icon(Icons.close));
+                }
                 //O usuário clica no botão verdadeiro.
                 setState(() {
-                  indiceQuestaoAtual++;
+                  if (indiceQuestaoAtual <= perguntas.length - 2) {
+                    indiceQuestaoAtual++;
+                  } else {
+                    indiceQuestaoAtual = 0;
+                    marcadorDePontos.clear();
+                  }
                 });
               },
             ),
@@ -90,28 +99,37 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(15.0),
             child: TextButton(
               style: TextButton.styleFrom(
-                  backgroundColor: Colors.grey.shade800,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.zero),
+                backgroundColor: Colors.grey.shade800,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadiusGeometry.zero,
+                ),
               ),
               child: Text(
                 'Falso',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.white,
-                ),
+                style: TextStyle(fontSize: 20.0, color: Colors.white),
               ),
               onPressed: () {
                 //O usuário clica no botão falso.
+                bool respostaCerta = respostas[indiceQuestaoAtual];
+
+                if (!respostaCerta) {
+                  marcadorDePontos.add(Icon(Icons.check));
+                } else {
+                  marcadorDePontos.add(Icon(Icons.close));
+                }
+
                 setState(() {
-                  indiceQuestaoAtual++;
+                  if (indiceQuestaoAtual <= perguntas.length - 2) {
+                    indiceQuestaoAtual++;
+                  } else {
+                    indiceQuestaoAtual = 0;
+                  }
                 });
               },
             ),
           ),
         ),
-        Row(
-          children: marcadorDePontos,
-        ),
+        Row(children: marcadorDePontos),
       ],
     );
   }
