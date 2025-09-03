@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizapp/perguntas.dart';
 
 void main() => runApp(QuizApp());
 
@@ -30,13 +31,30 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Widget> marcadorDePontos = [];
 
-  List<String> perguntas = [
-    'O metrô é um dos meios de transporte mais seguros do mundo',
-    'A culinária brasileira é uma das melhores do mundo.',
-    'Vacas podem voar, assim como peixes d\'água utilizam os pés para andar.',
-  ];
+  // List<String> perguntas = [
+  //   'O metrô é um dos meios de transporte mais seguros do mundo',
+  //   'A culinária brasileira é uma das melhores do mundo.',
+  //   'Vacas podem voar, assim como peixes d\'água utilizam os pés para andar.',
+  // ];
 
-  List<bool> respostas = [true, true, false];
+  // List<bool> respostas = [true, true, false];
+
+  List<Perguntas> perguntasERepostas = [
+    Perguntas(
+      q: 'O metrô é um dos meios de transporte mais seguros do mundo.',
+      r: true,
+    ),
+
+    Perguntas(
+      q: 'A culinária brasileira é uma das melhores do mundo.',
+      r: true,
+    ),
+
+    Perguntas(
+      q: 'Vacas podem voar, assim como peixes d\'água utilizam os pés para andar.',
+      r: false,
+    ),
+  ];
 
   int indiceQuestaoAtual = 0;
 
@@ -52,7 +70,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                perguntas[indiceQuestaoAtual],
+                perguntasERepostas[indiceQuestaoAtual].questao,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 25.0),
               ),
@@ -74,7 +92,8 @@ class _QuizPageState extends State<QuizPage> {
                 style: TextStyle(color: Colors.white, fontSize: 20.0),
               ),
               onPressed: () {
-                bool respostaCerta = respostas[indiceQuestaoAtual];
+                bool respostaCerta =
+                    perguntasERepostas[indiceQuestaoAtual].respostaDaQuestao;
 
                 if (respostaCerta) {
                   marcadorDePontos.add(Icon(Icons.check));
@@ -83,7 +102,7 @@ class _QuizPageState extends State<QuizPage> {
                 }
                 //O usuário clica no botão verdadeiro.
                 setState(() {
-                  if (indiceQuestaoAtual <= perguntas.length - 2) {
+                  if (indiceQuestaoAtual <= perguntasERepostas.length - 2) {
                     indiceQuestaoAtual++;
                   } else {
                     indiceQuestaoAtual = 0;
@@ -110,7 +129,8 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //O usuário clica no botão falso.
-                bool respostaCerta = respostas[indiceQuestaoAtual];
+                bool respostaCerta =
+                    perguntasERepostas[indiceQuestaoAtual].respostaDaQuestao;
 
                 if (!respostaCerta) {
                   marcadorDePontos.add(Icon(Icons.check));
@@ -119,7 +139,7 @@ class _QuizPageState extends State<QuizPage> {
                 }
 
                 setState(() {
-                  if (indiceQuestaoAtual <= perguntas.length - 2) {
+                  if (indiceQuestaoAtual <= perguntasERepostas.length - 2) {
                     indiceQuestaoAtual++;
                   } else {
                     indiceQuestaoAtual = 0;
