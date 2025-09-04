@@ -30,15 +30,18 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  // Cria o array para os ícones e atribui vazio
+  // // Cria o array para os ícones e atribui vazio
   List<Widget> marcadorDePontos = [];
+  // Instacia a classe Helper para ter acesso aos métodos dentro dela
+  static final Helper helper = Helper();
 
   void conferirResposta(bool respostaDoUsuario) {
-    bool respostaCerta = Helper().obterRespostaCorreta();
+
+    bool respostaCerta = helper.obterRespostaCorreta();
 
     setState(() {
       // Se chegou na última pergunta
-      if (Helper().conferirFimDaExecucao() == true) {
+      if (helper.conferirFimDaExecucao() == true) {
         // Emite aletar
         Alert(
           context: context,
@@ -47,7 +50,7 @@ class _QuizPageState extends State<QuizPage> {
         ).show();
 
         // Reinicia o valor da propriedade _numeroDaQuestaoAtual
-        Helper().resetaQuiz();
+        helper.resetaQuiz();
 
         // Limpa o array marcadoresDePontos para uma nova rodada de perguntas
         marcadorDePontos.clear();
@@ -55,7 +58,7 @@ class _QuizPageState extends State<QuizPage> {
       // Se não chegou na última pergunta ainda
       else {
         // E se a resposta do usuário estiver correta
-        if (respostaDoUsuario = respostaCerta) {
+        if (respostaDoUsuario == respostaCerta) {
           // Adiciona ícones de check no array marcadorDePontos
           marcadorDePontos.add(
               Icon(
@@ -74,10 +77,11 @@ class _QuizPageState extends State<QuizPage> {
           );
         }
         // Exibe a próxima pergunta
-        Helper().proximaPergunta();
+        helper.proximaPergunta();
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -90,7 +94,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                Helper().obterQuestao(),
+                helper.obterQuestao(),
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 25.0),
               ),
@@ -109,10 +113,15 @@ class _QuizPageState extends State<QuizPage> {
               ),
               child: Text(
                 'Verdadeiro',
-                style: TextStyle(color: Colors.white, fontSize: 20.0),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                ),
               ),
               onPressed: () {
-                conferirResposta(true);
+                setState(() {
+                  conferirResposta(true);
+                });
               },
             ),
           ),

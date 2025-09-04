@@ -1,6 +1,7 @@
 import 'perguntas.dart';
 
 class Helper {
+
   int _numeroDaQuestaoAtual = 0;
 
   final List<Perguntas> _bancoDePerguntas = [
@@ -59,12 +60,13 @@ class Helper {
   ];
 
   void proximaPergunta() {
-    print(_numeroDaQuestaoAtual);
-    if (_numeroDaQuestaoAtual < _bancoDePerguntas.length -1){
-      _numeroDaQuestaoAtual = _numeroDaQuestaoAtual+1;
+    if (_numeroDaQuestaoAtual < _bancoDePerguntas.length - 1){
+      _numeroDaQuestaoAtual++;
     }
+
     print(_numeroDaQuestaoAtual);
     print(_bancoDePerguntas.length);
+
   }
 
   String obterQuestao() {
