@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quizapp/perguntas.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'helper.dart';
 
 void main() => runApp(QuizApp());
 
@@ -29,35 +30,54 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  // Cria o array para os ícones e atribui vazio
   List<Widget> marcadorDePontos = [];
 
-  // List<String> perguntas = [
-  //   'O metrô é um dos meios de transporte mais seguros do mundo',
-  //   'A culinária brasileira é uma das melhores do mundo.',
-  //   'Vacas podem voar, assim como peixes d\'água utilizam os pés para andar.',
-  // ];
+  void conferirResposta(bool respostaDoUsuario) {
+    bool respostaCerta = Helper().obterRespostaCorreta();
 
-  // List<bool> respostas = [true, true, false];
+    setState(() {
+      // Se chegou na última pergunta
+      if (Helper().conferirFimDaExecucao() == true) {
+        // Emite aletar
+        Alert(
+          context: context,
+          title: 'QUIZ',
+          desc: 'Você respondeu todas as perguntas!',
+        ).show();
 
-  List<Perguntas> perguntasERepostas = [
-    Perguntas(
-      q: 'O metrô é um dos meios de transporte mais seguros do mundo.',
-      r: true,
-    ),
+        // Reinicia o valor da propriedade _numeroDaQuestaoAtual
+        Helper().resetaQuiz();
 
-    Perguntas(
-      q: 'A culinária brasileira é uma das melhores do mundo.',
-      r: true,
-    ),
-
-    Perguntas(
-      q: 'Vacas podem voar, assim como peixes d\'água utilizam os pés para andar.',
-      r: false,
-    ),
-  ];
-
-  int indiceQuestaoAtual = 0;
-
+        // Limpa o array marcadoresDePontos para uma nova rodada de perguntas
+        marcadorDePontos.clear();
+      }
+      // Se não chegou na última pergunta ainda
+      else {
+        // E se a resposta do usuário estiver correta
+        if (respostaDoUsuario = respostaCerta) {
+          // Adiciona ícones de check no array marcadorDePontos
+          marcadorDePontos.add(
+              Icon(
+                Icons.check,
+                color: Colors.green,
+              )
+          );
+          // Se a resposta estiver errada
+        } else {
+          // Adiciona ícones de close no array marcadorDePontos
+          marcadorDePontos.add(
+            Icon(
+              Icons.close,
+              color: Colors.red,
+            ),
+          );
+        }
+        // Exibe a próxima pergunta
+        Helper().proximaPergunta();
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -70,7 +90,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                perguntasERepostas[indiceQuestaoAtual].questao,
+                Helper().obterQuestao(),
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 25.0),
               ),
@@ -92,23 +112,7 @@ class _QuizPageState extends State<QuizPage> {
                 style: TextStyle(color: Colors.white, fontSize: 20.0),
               ),
               onPressed: () {
-                bool respostaCerta =
-                    perguntasERepostas[indiceQuestaoAtual].respostaDaQuestao;
-
-                if (respostaCerta) {
-                  marcadorDePontos.add(Icon(Icons.check));
-                } else {
-                  marcadorDePontos.add(Icon(Icons.close));
-                }
-                //O usuário clica no botão verdadeiro.
-                setState(() {
-                  if (indiceQuestaoAtual <= perguntasERepostas.length - 2) {
-                    indiceQuestaoAtual++;
-                  } else {
-                    indiceQuestaoAtual = 0;
-                    marcadorDePontos.clear();
-                  }
-                });
+                conferirResposta(true);
               },
             ),
           ),
@@ -129,22 +133,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //O usuário clica no botão falso.
-                bool respostaCerta =
-                    perguntasERepostas[indiceQuestaoAtual].respostaDaQuestao;
-
-                if (!respostaCerta) {
-                  marcadorDePontos.add(Icon(Icons.check));
-                } else {
-                  marcadorDePontos.add(Icon(Icons.close));
-                }
-
-                setState(() {
-                  if (indiceQuestaoAtual <= perguntasERepostas.length - 2) {
-                    indiceQuestaoAtual++;
-                  } else {
-                    indiceQuestaoAtual = 0;
-                  }
-                });
+                conferirResposta(false);
               },
             ),
           ),
